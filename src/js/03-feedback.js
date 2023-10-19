@@ -8,15 +8,20 @@ container.addEventListener('input', throttle(inputForm, 500));
 container.addEventListener('submit', submitForm);
 
 function uploadForm(container) {
-  let data = JSON.parse(localStorage.getItem('feedback - form - state')) ?? {};
-  [...container.elements].forEach(elem => {
-    if (
-      (elem.nodeName === 'INPUT' || elem.nodeName === 'TEXTAREA') &&
-      data[elem.name]
-    ) {
-      elem.value = data[elem.name];
-    }
-  });
+  try {
+    let dataStorage = localStorage.getItem('feedback - form - state') ?? {};
+    let data = JSON.parse(dataStorage);
+    [...container.elements].forEach(elem => {
+      if (
+        (elem.nodeName === 'INPUT' || elem.nodeName === 'TEXTAREA') &&
+        data[elem.name]
+      ) {
+        elem.value = data[elem.name];
+      }
+    });
+  } catch (error) {
+    console.error('Get state error: ', error.message);
+  }
 }
 
 function inputForm(evt) {
@@ -33,7 +38,11 @@ function saveData(currentTarget) {
       data[elem.attributes.name.value] = elem.value;
     }
   });
-  localStorage.setItem('feedback - form - state', JSON.stringify(data));
+  try {
+    localStorage.setItem('feedback - form - state', JSON.stringify(data));
+  } catch (error) {
+    console.error('Set state error: ', error.message);
+  }
 }
 
 function submitForm(evt) {
@@ -60,6 +69,11 @@ function resetData() {
       elem.value = '';
     }
   });
-  console.log(localStorage.getItem('feedback - form - state'));
-  localStorage.setItem('feedback - form - state', JSON.stringify({}));
+
+  try {
+    console.log(localStorage.getItem('feedback - form - state'));
+    localStorage.setItem('feedback - form - state', JSON.stringify({}));
+  } catch (error) {
+    console.error('Get state error: ', error.message);
+  }
 }
