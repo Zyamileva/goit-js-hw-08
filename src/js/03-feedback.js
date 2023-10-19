@@ -76,4 +76,5 @@ function resetData() {
   } catch (error) {
     console.error('Get state error: ', error.message);
   }
+  container.reset();
 }
