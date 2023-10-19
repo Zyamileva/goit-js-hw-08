@@ -37,6 +37,7 @@ function saveData(currentTarget) {
 }
 
 function submitForm(evt) {
+  evt.preventDefault();
   const { currentTarget } = evt;
   if (
     [...currentTarget.elements].some(elem => {
@@ -46,7 +47,6 @@ function submitForm(evt) {
       );
     })
   ) {
-    evt.preventDefault;
     alert('Не введена інформація.');
     return;
   }
